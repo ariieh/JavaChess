@@ -11,7 +11,7 @@ public class Board {
         
         for (int i = 0; i < 8; i++) {
             if (i > 5) c = "W";
-            
+
             if (i == 0 || i == 7) {
                 Board[i] = new Square[] {
                     new Square(new Rook(c)),
@@ -35,12 +35,19 @@ public class Board {
     
     public String toString() {
         String board = "";
+        String horizontalLabel = "  A B C D E F G H\n";
         for (int i = 0; i < 8; i++) {
+            if (i == 0) board += horizontalLabel;
             for (int j = 0; j < 8; j++) {
+                if (j == 0) board += Integer.toString(8 - i);
+                Square square = Board[i][j];
                 board += "|";
-                board += Board[i][j].toString();
-                if (j == 7) board += "|\n";
+                if (square.isOccupiedByWhitePiece()) board += "\033[31;1m";
+                board += square.toString();
+                if (square.isOccupiedByWhitePiece()) board += "\033[0m";
+                if (j == 7) board += "|" + Integer.toString(8 - i) + "\n";
             }
+            if (i == 7) board += horizontalLabel;
         }
         return board;
     }
