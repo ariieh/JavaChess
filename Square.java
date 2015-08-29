@@ -1,16 +1,22 @@
 package chess;
 
 public class Square {
-    public Piece Piece;
+    private Piece Piece;
 
     public Square(Piece p) {
         this.Piece = p;
     }
     
+    public Piece getPiece() { return this.Piece; }
+    public void setPiece(Piece p) { this.Piece = p; }
+    
     public boolean isEmpty() { return this.Piece == null; }
     public boolean isOccupied() { return !isEmpty(); }
-    public boolean isOccupiedByWhitePiece() {
-        return isOccupied() && this.Piece.isWhite();
+    
+    public Piece empty() {
+        Piece oldPiece = this.Piece;
+        setPiece(null);
+        return oldPiece;
     }
     
     public boolean isOccupiedByPieceOfColor(String color) {
