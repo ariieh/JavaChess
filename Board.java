@@ -17,8 +17,8 @@ public class Board {
                     new Square(new Rook(c)),
                     new Square(new Knight(c)),
                     new Square(new Bishop(c)),
-                    new Square(new King(c)),
                     new Square(new Queen(c)),
+                    new Square(new King(c)),
                     new Square(new Bishop(c)),
                     new Square(new Knight(c)),
                     new Square(new Rook(c))
