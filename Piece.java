@@ -9,8 +9,9 @@ public class Piece {
         this.Symbol = symbol;
     }
     
-    public boolean isWhite() { return this.Color.equals("W"); }
-    public boolean isBlack() { return this.Color.equals("B"); }
+    public boolean isColor(String color) {
+        return this.Color.equals(color);
+    }
     
     public String toString() {
         return this.Symbol;

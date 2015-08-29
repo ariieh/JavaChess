@@ -12,8 +12,9 @@ public class Square {
     public boolean isOccupiedByWhitePiece() {
         return isOccupied() && this.Piece.isWhite();
     }
-    public boolean isOccupiedByBlackPiece() {
-        return isOccupied() && this.Piece.isBlack();
+    
+    public boolean isOccupiedByPieceOfColor(String color) {
+        return isOccupied() && this.Piece.isColor(color);
     }
 
     public String toString() {

@@ -42,9 +42,9 @@ public class Board {
                 if (j == 0) board += Integer.toString(8 - i);
                 Square square = Board[i][j];
                 board += "|";
-                if (square.isOccupiedByWhitePiece()) board += "\033[31;1m";
+                if (square.isOccupiedByPieceOfColor("W")) board += "\033[31;1m";
                 board += square.toString();
-                if (square.isOccupiedByWhitePiece()) board += "\033[0m";
+                if (square.isOccupiedByPieceOfColor("W")) board += "\033[0m";
                 if (j == 7) board += "|" + Integer.toString(8 - i) + "\n";
             }
             if (i == 7) board += horizontalLabel;
