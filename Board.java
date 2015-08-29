@@ -1,9 +1,13 @@
 package chess;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Board {
     private Square[][] Board;
+    private List<String> Columns =
+        Arrays.asList("A","B","C","D","E","F","G","H");
     
     public Board() {
         Board = new Square[8][8];
@@ -31,6 +35,38 @@ public class Board {
                     Board[i][j] = new Square(null);
             }
         }
+    }
+    
+    public boolean isValidMoveForColor(String from, String to, String color) {
+        if (from.equals(to)) return false;
+        
+        Square fromSquare = getSquareAtCoordinates(from);
+        if (fromSquare == null) return false;
+        
+        Square toSquare = getSquareAtCoordinates(to);
+        if (toSquare == null) return false;
+
+        if (!fromSquare.isOccupiedByPieceOfColor(color)) return false;
+        if (toSquare.isOccupiedByPieceOfColor(color)) return false;
+
+        return true;
+        
+    }
+    
+    public void move(String from, String to) {
+        Square fromSquare = getSquareAtCoordinates(from);
+        Square toSquare = getSquareAtCoordinates(to);
+        
+        toSquare.setPiece(fromSquare.empty());
+    }
+    
+    private Square getSquareAtCoordinates(String coords) {
+        int col = Columns.indexOf(coords.substring(0, 1));
+        int row = 8 - Integer.parseInt(coords.substring(1, 2));
+
+        if (col < 0 || col > 7 || row < 0 || row > 7) return null;
+        
+        return Board[row][col];
     }
     
     public String toString() {
