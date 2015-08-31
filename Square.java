@@ -30,6 +30,13 @@ public class Square {
     public String toString() {
         return isEmpty() ? " " : Piece.toString();
     }
+    
+    public boolean containsPawnOnStartingRow() {
+        return isOccupied() && this.Piece.Symbol.equals("P")
+            &&    ((this.Piece.Color.equals("W") && this.Row == 6)
+                || (this.Piece.Color.equals("B") && this.Row == 1));
+    }
+    
     public boolean equals(Square other) {
         return this.Row == other.Row && this.Col == other.Col;
     }
