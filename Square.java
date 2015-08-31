@@ -30,4 +30,7 @@ public class Square {
     public String toString() {
         return isEmpty() ? " " : Piece.toString();
     }
+    public boolean equals(Square other) {
+        return this.Row == other.Row && this.Col == other.Col;
+    }
 }
