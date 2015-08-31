@@ -16,6 +16,14 @@ public abstract class Piece {
     public String toString() {
         return this.Symbol;
     }
+    
+    public boolean isWhite() { return this.Color.equals("W"); }
+    public boolean isBlack() { return this.Color.equals("B"); }
+    
+    public String oppositeColor() {
+        return this.isWhite() ? "B" : "W";
+    }
+    
     public abstract boolean canMoveLikeKnight();
     public abstract boolean canMoveLikePawn();
     
