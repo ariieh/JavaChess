@@ -18,21 +18,21 @@ public class Board {
 
             if (i == 0 || i == 7) {
                 Board[i] = new Square[] {
-                    new Square(new Rook(c)),
-                    new Square(new Knight(c)),
-                    new Square(new Bishop(c)),
-                    new Square(new Queen(c)),
-                    new Square(new King(c)),
-                    new Square(new Bishop(c)),
-                    new Square(new Knight(c)),
-                    new Square(new Rook(c))
+                    new Square(new Rook(c), i, 0),
+                    new Square(new Knight(c), i, 1),
+                    new Square(new Bishop(c), i, 2),
+                    new Square(new Queen(c), i, 3),
+                    new Square(new King(c), i, 4),
+                    new Square(new Bishop(c), i, 5),
+                    new Square(new Knight(c), i, 6),
+                    new Square(new Rook(c), i, 7)
                 };
             } else if (i == 1 || i == 6) {
                 for (int j = 0; j < 8; j++)
-                    Board[i][j] = new Square(new Pawn(c));
+                    Board[i][j] = new Square(new Pawn(c), i, j);
             } else {
                 for (int j = 0; j < 8; j++)
-                    Board[i][j] = new Square(null);
+                    Board[i][j] = new Square(null, i, j);
             }
         }
     }

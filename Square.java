@@ -2,9 +2,13 @@ package chess;
 
 public class Square {
     private Piece Piece;
+    public int Row;
+    public int Col;
 
-    public Square(Piece p) {
+    public Square(Piece p, int row, int col) {
         this.Piece = p;
+        this.Row = row;
+        this.Col = col;
     }
     
     public Piece getPiece() { return this.Piece; }
