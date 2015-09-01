@@ -11,4 +11,6 @@ public class Pawn extends Piece {
     public int movesUp() { return this.Color.equals("W") ? 1 : 0; }
     public int movesDown() { return this.Color.equals("W") ? 0 : 1; }
     public int movesSide() { return 0; }
+    
+    public double pointValue() { return 3; };
 }

@@ -11,5 +11,6 @@ public class Knight extends Piece {
     public int movesUp() { return 0; }
     public int movesDown() { return 0; }
     public int movesSide() { return 0; }
-
+    
+    public double pointValue() { return 3; };
 }

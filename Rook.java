@@ -11,4 +11,6 @@ public class Rook extends Piece {
     public int movesUp() { return 8; }
     public int movesDown() { return 8; }
     public int movesSide() { return 8; }
+    
+    public double pointValue() { return 5; };
 }

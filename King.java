@@ -11,5 +11,6 @@ public class King extends Piece {
     public int movesUp() { return 1; }
     public int movesDown() { return 1; }
     public int movesSide() { return 1; }
-
+    
+    public double pointValue() { return 4; };
 }

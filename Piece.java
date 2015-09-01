@@ -31,4 +31,6 @@ public abstract class Piece {
     public abstract int movesUp();
     public abstract int movesDown();
     public abstract int movesSide();
+    
+    public abstract double pointValue();
 }
