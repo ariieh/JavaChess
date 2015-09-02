@@ -3,9 +3,16 @@ package chess;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class Board {
+    // Board as multidimensional array of squares that contain pieces
     private Square[][] Board;
+    
+    // Convienence hash map for storing pieces (e.g. white pawn, black king) and their locations
+    public HashMap<Piece, ArrayList<Square>> PieceLocations = new HashMap();
+    
     private List<String> Columns =
         Arrays.asList("A","B","C","D","E","F","G","H");
     
@@ -17,7 +24,7 @@ public class Board {
             if (i > 5) c = "W";
 
             if (i == 0 || i == 7) {
-                Board[i] = new Square[] {
+                Square[] squares = new Square[] {
                     new Square(new Rook(c), i, 0),
                     new Square(new Knight(c), i, 1),
                     new Square(new Bishop(c), i, 2),
@@ -27,9 +34,16 @@ public class Board {
                     new Square(new Knight(c), i, 6),
                     new Square(new Rook(c), i, 7)
                 };
+                Board[i] = squares;
+                for (int k = 0; k < squares.length; k++)
+                    addPieceAndSquareToPieceLocations(squares[k].getPiece(), squares[k]);
             } else if (i == 1 || i == 6) {
-                for (int j = 0; j < 8; j++)
-                    Board[i][j] = new Square(new Pawn(c), i, j);
+                for (int j = 0; j < 8; j++) {
+                    Piece piece = new Pawn(c);
+                    Square square = new Square(piece, i, j);
+                    Board[i][j] = square;
+                    addPieceAndSquareToPieceLocations(piece, square);
+                }
             } else {
                 for (int j = 0; j < 8; j++)
                     Board[i][j] = new Square(null, i, j);
@@ -39,18 +53,17 @@ public class Board {
     
     public boolean isValidMoveForColor(String from, String to, String color) {
         // TODO: castling, en passant
-        
         if (from.equals(to)) return false;
-        
+
         Square fromSquare = getSquareAtCoordinates(from);
         if (fromSquare == null) return false;
-        
+
         Square toSquare = getSquareAtCoordinates(to);
         if (toSquare == null) return false;
 
         if (!fromSquare.isOccupiedByPieceOfColor(color)) return false;
         if (toSquare.isOccupiedByPieceOfColor(color)) return false;
-        
+
         if (validMovesForSquare(fromSquare).contains(toSquare)) return true;
         else return false;
     }
@@ -58,8 +71,14 @@ public class Board {
     public void move(String from, String to) {
         Square fromSquare = getSquareAtCoordinates(from);
         Square toSquare = getSquareAtCoordinates(to);
-        
-        toSquare.setPiece(fromSquare.empty());
+        Piece pieceToMove = fromSquare.empty();
+        Piece pieceToRemove = toSquare.empty();
+        addPieceAndSquareToPieceLocations(pieceToMove, toSquare);
+        removePieceAndSquareFromPieceLocations(pieceToMove, fromSquare);
+        removePieceAndSquareFromPieceLocations(pieceToRemove, toSquare);
+        toSquare.setPiece(pieceToMove);
+    }
+    
     }
     
     private Square getSquareAtCoordinates(String coords) {
@@ -73,6 +92,26 @@ public class Board {
     
     private boolean rowAndColAreWithinBounds(int row, int col) {
         return col >= 0 && col <= 7 && row >= 0 && row <= 7;
+    }
+    
+    private void removePieceAndSquareFromPieceLocations(Piece piece, Square squareToRemove) {
+        ArrayList<Square> squares = PieceLocations.get(piece);
+        if (squares == null) return;
+        Iterator<Square> i = squares.iterator();
+        while (i.hasNext()) {
+            Square s = i.next();
+            if (s.equals(squareToRemove)) {
+                i.remove();
+                break;
+            }
+        }
+    }
+    
+    private void addPieceAndSquareToPieceLocations(Piece piece, Square squareToAdd) {
+        ArrayList<Square> pieceLocations = PieceLocations.get(piece);
+        if (pieceLocations == null) pieceLocations = new ArrayList<Square>();
+        pieceLocations.add(squareToAdd);
+        PieceLocations.put(piece, pieceLocations);
     }
     
     public List<Square> validMovesForSquare(Square square) {
@@ -157,7 +196,7 @@ public class Board {
             if (square.containsPawnOnStartingRow()) movesDown += 1;
             validMoves.addAll(validMovesForSquareInDirection(square, movesDown, 0, 0, 1, 0));   
         }
-        
+
         // Attacking move
         int rowColPairs[][] = { {-1,-1}, {-1,1} };
         for (int i = 0; i < rowColPairs.length; i++) {

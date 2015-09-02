@@ -17,11 +17,25 @@ public abstract class Piece {
         return this.Symbol;
     }
     
+    public String fullPiece() {
+        return this.Color + this.Symbol;
+    }
+    
     public boolean isWhite() { return this.Color.equals("W"); }
     public boolean isBlack() { return this.Color.equals("B"); }
     
     public String oppositeColor() {
         return this.isWhite() ? "B" : "W";
+    }
+    
+    public int hashCode() {
+        return fullPiece().hashCode();
+    }
+    
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Piece)) return false;
+        Piece otherPiece = (Piece) obj;
+        return this.fullPiece().equals(otherPiece.fullPiece());
     }
     
     public abstract boolean canMoveLikeKnight();
