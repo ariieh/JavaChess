@@ -79,6 +79,12 @@ public class Board {
         toSquare.setPiece(pieceToMove);
     }
     
+    public String colorInCheckmate() {
+        return null;
+    }
+    
+    public String colorInCheck() {
+        return null;
     }
     
     private Square getSquareAtCoordinates(String coords) {
