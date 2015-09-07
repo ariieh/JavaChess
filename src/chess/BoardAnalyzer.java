@@ -14,7 +14,7 @@ public class BoardAnalyzer {
         double whitePointValue = 0;
         double blackPointValue = 0;
         
-        for (Map.Entry<Piece, ArrayList<Square>> entry : board.PieceLocations.entrySet()) {
+        for (Map.Entry<Piece, ArrayList<Square>> entry : board.pieceLocations().entrySet()) {
             Piece piece = entry.getKey();
             ArrayList<Square> squares = entry.getValue();
             

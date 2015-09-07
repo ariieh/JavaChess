@@ -11,7 +11,8 @@ public class Board {
     private Square[][] Board;
     
     // Convienence hash map for storing pieces (e.g. white pawn, black king) and their locations
-    public HashMap<Piece, ArrayList<Square>> PieceLocations = new HashMap();
+    public HashMap<Piece, ArrayList<Square>> WhitePieceLocations = new HashMap();
+    public HashMap<Piece, ArrayList<Square>> BlackPieceLocations = new HashMap();
     
     private List<String> Columns =
         Arrays.asList("A","B","C","D","E","F","G","H");
@@ -101,6 +102,9 @@ public class Board {
     }
     
     private void removePieceAndSquareFromPieceLocations(Piece piece, Square squareToRemove) {
+        if (piece == null) return;
+        HashMap<Piece, ArrayList<Square>> PieceLocations =
+                piece.isWhite() ? WhitePieceLocations : BlackPieceLocations;
         ArrayList<Square> squares = PieceLocations.get(piece);
         if (squares == null) return;
         Iterator<Square> i = squares.iterator();
@@ -114,6 +118,8 @@ public class Board {
     }
     
     private void addPieceAndSquareToPieceLocations(Piece piece, Square squareToAdd) {
+        HashMap<Piece, ArrayList<Square>> PieceLocations =
+                piece.isWhite() ? WhitePieceLocations : BlackPieceLocations;
         ArrayList<Square> pieceLocations = PieceLocations.get(piece);
         if (pieceLocations == null) pieceLocations = new ArrayList<Square>();
         pieceLocations.add(squareToAdd);
@@ -188,6 +194,12 @@ public class Board {
         return validMoves;
     }
     
+    public HashMap<Piece, ArrayList<Square>> pieceLocations() {
+        HashMap<Piece, ArrayList<Square>> pieceLocations = WhitePieceLocations;
+        pieceLocations.putAll(BlackPieceLocations);
+        return pieceLocations;
+    }
+
     public List<Square> validMovesForPawn(Square square) {
         List<Square> validMoves = new ArrayList<Square>();
         
