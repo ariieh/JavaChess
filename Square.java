@@ -37,7 +37,9 @@ public class Square {
                 || (this.Piece.Color.equals("B") && this.Row == 1));
     }
     
-    public boolean equals(Square other) {
-        return this.Row == other.Row && this.Col == other.Col;
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Square)) return false;
+        Square otherSquare = (Square) obj;
+        return this.Row == otherSquare.Row && this.Col == otherSquare.Col;
     }
 }
