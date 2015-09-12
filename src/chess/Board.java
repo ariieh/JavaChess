@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class Board {
     // Board as multidimensional array of squares that contain pieces
@@ -74,18 +75,41 @@ public class Board {
         Square toSquare = getSquareAtCoordinates(to);
         Piece pieceToMove = fromSquare.empty();
         Piece pieceToRemove = toSquare.empty();
+        
+        if (pieceToMove == null) throw new IllegalArgumentException("No piece at " + from);
+        
         addPieceAndSquareToPieceLocations(pieceToMove, toSquare);
         removePieceAndSquareFromPieceLocations(pieceToMove, fromSquare);
         removePieceAndSquareFromPieceLocations(pieceToRemove, toSquare);
         toSquare.setPiece(pieceToMove);
     }
-    
+        
     public String colorInCheckmate() {
+        // TODO get isValid to consider check
+        Square whiteKingSquare = WhitePieceLocations.get(new King("W")).get(0);
+        if (validMovesForSquare(whiteKingSquare).isEmpty() && isColorInCheck("W")) return "W";
+        Square blackKingSquare = BlackPieceLocations.get(new King("B")).get(0);
+        if (validMovesForSquare(blackKingSquare).isEmpty() && isColorInCheck("B")) return "B";
         return null;
     }
     
-    public String colorInCheck() {
-        return null;
+    public boolean isColorInCheck(String colorUnderAttack) {
+        boolean colorIsWhite = colorUnderAttack.equals("W");
+        String attackingColor = colorIsWhite ? "B" : "W";
+        HashMap<Piece, ArrayList<Square>> EnemyPieceLocations =
+                colorIsWhite ? BlackPieceLocations : WhitePieceLocations;
+        
+        for (Map.Entry<Piece, ArrayList<Square>> entry : EnemyPieceLocations.entrySet()) {
+            Piece piece = entry.getKey();
+            ArrayList<Square> squares = entry.getValue();
+            
+            for (Square s : squares) {
+                for (Square move : validMovesForSquareExCheck(s))
+                    if (move.containsKingOfColor(colorUnderAttack)) return true;
+            }
+        }
+        
+        return false;
     }
     
     private Square getSquareAtCoordinates(String coords) {
@@ -129,7 +153,20 @@ public class Board {
     public List<Square> validMovesForSquare(Square square) {
         Piece piece = square.getPiece();
         if (piece == null) return null;
-        
+
+        List<Square> validMovesForSquare = validMovesForSquareExCheck(square);
+        Iterator<Square> i = validMovesForSquare.iterator();
+        while (i.hasNext()) {
+            Square s = i.next();
+            this.move(square.location(), s.location());
+            if (this.isColorInCheck(piece.Color)) i.remove();
+            this.move(s.location(), square.location());
+        }
+        return validMovesForSquare;
+    }
+
+    public List<Square> validMovesForSquareExCheck(Square square) {
+        Piece piece = square.getPiece();
         List<Square> validMoves = new ArrayList<Square>();
         
         // Special moves the piece is a pawn or a knight
@@ -150,18 +187,24 @@ public class Board {
     }
     
     private List<Square> validMovesForSquareInDirection(Square square, int length, int up, int right, int down, int left) {
+        
         List<Square> validMoves = new ArrayList<Square>();
         for (int i = 1; i <= length; i++) {
-            if (up != 0) up += i - 1;
-            if (down != 0) down += i - 1;
-            if (right != 0) right += i - 1;
-            if (left != 0) left += i - 1;
+            if (up != 0) up = i;
+            if (down != 0) down = i;
+            if (right != 0) right = i;
+            if (left != 0) left = i;
+
             int row = square.Row - up + down;
             int col = square.Col + right - left;
+            
             if (!rowAndColAreWithinBounds(row, col)) break;
             Square s = Board[row][col];
-            if (s.isOccupied()) break;
-            validMoves.add(s);
+            
+            if (s.isOccupied()) {
+                if (!s.isOccupiedByPieceOfColor(square.Piece.Color)) validMoves.add(s);
+                break;
+            } else { validMoves.add(s); }
         }
         return validMoves;
     }

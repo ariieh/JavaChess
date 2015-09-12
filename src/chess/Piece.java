@@ -23,6 +23,7 @@ public abstract class Piece {
     
     public boolean isWhite() { return this.Color.equals("W"); }
     public boolean isBlack() { return this.Color.equals("B"); }
+    public boolean isKing() { return this.Symbol.equals("K"); }
     
     public String oppositeColor() {
         return this.isWhite() ? "B" : "W";

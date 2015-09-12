@@ -1,7 +1,9 @@
 package chess;
+import java.util.List;
+import java.util.Arrays;
 
 public class Square {
-    private Piece Piece;
+    public Piece Piece;
     public int Row;
     public int Col;
 
@@ -11,11 +13,22 @@ public class Square {
         this.Col = col;
     }
     
+    private List<String> Columns =
+        Arrays.asList("A","B","C","D","E","F","G","H");
+    
     public Piece getPiece() { return this.Piece; }
     public void setPiece(Piece p) { this.Piece = p; }
     
     public boolean isEmpty() { return this.Piece == null; }
     public boolean isOccupied() { return !isEmpty(); }
+    
+    public boolean containsKing() {
+        return isOccupied() && this.Piece.isKing();
+    }
+    
+    public boolean containsKingOfColor(String color) {
+        return containsKing() && this.Piece.Color.equals(color);
+    }
     
     public Piece empty() {
         Piece oldPiece = this.Piece;
@@ -29,6 +42,10 @@ public class Square {
 
     public String toString() {
         return isEmpty() ? " " : Piece.toString();
+    }
+    
+    public String location() {
+        return this.Columns.get(this.Col) + String.valueOf(8 - this.Row);
     }
     
     public boolean containsPawnOnStartingRow() {
