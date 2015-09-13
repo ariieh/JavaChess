@@ -10,7 +10,7 @@ public class BoardAnalyzer {
         
     }
     
-    public HashMap<String, Double> pointValueForBoardAndColor(Board board) {
+    public HashMap<String, Double> pointValueForBoard(Board board) {
         double whitePointValue = 0;
         double blackPointValue = 0;
                 
@@ -24,4 +24,5 @@ public class BoardAnalyzer {
         hash.put("B", blackPointValue);
         return hash;
     }
+    
 }

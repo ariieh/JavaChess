@@ -42,7 +42,7 @@ public class BoardAnalyzerTest {
         // Starting position
         expResult.put("W", 43.5);
         expResult.put("B", 43.5);
-        HashMap<String, Double> result = instance.pointValueForBoardAndColor(board);
+        HashMap<String, Double> result = instance.pointValueForBoard(board);
         assertEquals(expResult, result);
         
         // After one pawn capture
@@ -50,20 +50,20 @@ public class BoardAnalyzerTest {
         board.move("D7", "D5");
         board.move("E4", "D5");
         expResult.put("B", 42.5);
-        result = instance.pointValueForBoardAndColor(board);
+        result = instance.pointValueForBoard(board);
         assertEquals(expResult, result);
         
         // After bishop capture
         board.move("C8", "E6");
         board.move("D5", "E6");
         expResult.put("B", 39.25);
-        result = instance.pointValueForBoardAndColor(board);
+        result = instance.pointValueForBoard(board);
         assertEquals(expResult, result);
         
         // After pawn takeback
         board.move("F7", "E6");
         expResult.put("W", 42.5);
-        result = instance.pointValueForBoardAndColor(board);
+        result = instance.pointValueForBoard(board);
         assertEquals(expResult, result);
     }
 }
