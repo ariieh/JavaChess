@@ -13,16 +13,11 @@ public class BoardAnalyzer {
     public HashMap<String, Double> pointValueForBoardAndColor(Board board) {
         double whitePointValue = 0;
         double blackPointValue = 0;
-        
-        for (Map.Entry<Piece, ArrayList<Square>> entry : board.pieceLocations().entrySet()) {
-            Piece piece = entry.getKey();
-            ArrayList<Square> squares = entry.getValue();
-            
-            double value = squares.size() * piece.pointValue();
-            
-            if (piece.isWhite()) whitePointValue += value;
-            else blackPointValue += value;
-        }
+                
+        for (Map.Entry<Piece, ArrayList<Square>> entry : board.WhitePieceLocations.entrySet())
+            whitePointValue += entry.getValue().size() * entry.getKey().pointValue();
+        for (Map.Entry<Piece, ArrayList<Square>> entry : board.BlackPieceLocations.entrySet())
+            blackPointValue += entry.getValue().size() * entry.getKey().pointValue();
         
         HashMap<String, Double> hash = new HashMap();
         hash.put("W", whitePointValue);

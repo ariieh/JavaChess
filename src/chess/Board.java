@@ -240,12 +240,6 @@ public class Board {
         return validMoves;
     }
     
-    public HashMap<Piece, ArrayList<Square>> pieceLocations() {
-        HashMap<Piece, ArrayList<Square>> pieceLocations = WhitePieceLocations;
-        pieceLocations.putAll(BlackPieceLocations);
-        return pieceLocations;
-    }
-
     public List<Square> validMovesForPawn(Square square) {
         List<Square> validMoves = new ArrayList<Square>();
         
