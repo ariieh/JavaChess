@@ -30,12 +30,12 @@ public class Chess {
             // Make the move
             board.move(from, to);
             
-            // Checkmate. Kinda hacky but workable, refactor welcome.
-            String colorInCheckmate = board.colorInCheckmate();
-            if (colorInCheckmate != null) {
-                if (colorInCheckmate.equals("W")) System.out.println("White wins!");
-                else System.out.println("Black wins!");
-                break;
+            // Checkmate.
+            if (board.isColorInCheckmate("W")) {
+                System.out.println("White wins!"); break;
+            }
+            if (board.isColorInCheckmate("B")) {
+                System.out.println("Black wins!"); break;
             }
         }
     }

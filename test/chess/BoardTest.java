@@ -40,14 +40,15 @@ public class BoardTest {
         Board board = new Board();
         
         // No one in checkmate in beginning position
-        assertEquals(null, board.colorInCheckmate());
+        assertEquals(false, board.isColorInCheckmate("W"));
+        assertEquals(false, board.isColorInCheckmate("B"));
         
         // Fool's mate -- white is checkmated
         board.move("F2", "F3");
         board.move("E7", "E5");
         board.move("G2", "G4");
         board.move("D8", "H4");
-        assertEquals("W", board.colorInCheckmate());
+        assertEquals(true, board.isColorInCheckmate("W"));
     }
     
     @Test

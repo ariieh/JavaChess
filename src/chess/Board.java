@@ -84,17 +84,20 @@ public class Board {
         toSquare.setPiece(pieceToMove);
     }
         
-    public String colorInCheckmate() {
+    public boolean isColorInCheckmate(String color) {
         // TODO get isValid to consider check
-        Square whiteKingSquare = WhitePieceLocations.get(new King("W")).get(0);
-        if (validMovesForSquare(whiteKingSquare).isEmpty() && isColorInCheck("W")) return "W";
-        Square blackKingSquare = BlackPieceLocations.get(new King("B")).get(0);
-        if (validMovesForSquare(blackKingSquare).isEmpty() && isColorInCheck("B")) return "B";
-        return null;
+        if (color.equals("W")) {
+            Square whiteKingSquare = WhitePieceLocations.get(new King("W")).get(0);
+            if (validMovesForSquare(whiteKingSquare).isEmpty() && isColorInCheck("W")) return true;
+        } else {
+            Square blackKingSquare = BlackPieceLocations.get(new King("B")).get(0);
+            if (validMovesForSquare(blackKingSquare).isEmpty() && isColorInCheck("B")) return true;            
+        }
+        return false;
     }
     
-    public boolean isColorInCheck(String colorUnderAttack) {
-        boolean colorIsWhite = colorUnderAttack.equals("W");
+    public boolean isColorInCheck(String color) {
+        boolean colorIsWhite = color.equals("W");
         String attackingColor = colorIsWhite ? "B" : "W";
         HashMap<Piece, ArrayList<Square>> EnemyPieceLocations =
                 colorIsWhite ? BlackPieceLocations : WhitePieceLocations;
@@ -105,7 +108,7 @@ public class Board {
             
             for (Square s : squares) {
                 for (Square move : validMovesForSquareExCheck(s))
-                    if (move.containsKingOfColor(colorUnderAttack)) return true;
+                    if (move.containsKingOfColor(color)) return true;
             }
         }
         
