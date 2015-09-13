@@ -115,44 +115,6 @@ public class Board {
         return false;
     }
     
-    private Square getSquareAtCoordinates(String coords) {
-        int col = Columns.indexOf(coords.substring(0, 1));
-        int row = 8 - Integer.parseInt(coords.substring(1, 2));
-
-        if (!rowAndColAreWithinBounds(row, col)) return null;
-        
-        return Board[row][col];
-    }
-    
-    private boolean rowAndColAreWithinBounds(int row, int col) {
-        return col >= 0 && col <= 7 && row >= 0 && row <= 7;
-    }
-    
-    private void removePieceAndSquareFromPieceLocations(Piece piece, Square squareToRemove) {
-        if (piece == null) return;
-        HashMap<Piece, ArrayList<Square>> PieceLocations =
-                piece.isWhite() ? WhitePieceLocations : BlackPieceLocations;
-        ArrayList<Square> squares = PieceLocations.get(piece);
-        if (squares == null) return;
-        Iterator<Square> i = squares.iterator();
-        while (i.hasNext()) {
-            Square s = i.next();
-            if (s.equals(squareToRemove)) {
-                i.remove();
-                break;
-            }
-        }
-    }
-    
-    private void addPieceAndSquareToPieceLocations(Piece piece, Square squareToAdd) {
-        HashMap<Piece, ArrayList<Square>> PieceLocations =
-                piece.isWhite() ? WhitePieceLocations : BlackPieceLocations;
-        ArrayList<Square> pieceLocations = PieceLocations.get(piece);
-        if (pieceLocations == null) pieceLocations = new ArrayList<Square>();
-        pieceLocations.add(squareToAdd);
-        PieceLocations.put(piece, pieceLocations);
-    }
-    
     public List<Square> validMovesForPieceOnSquare(Square square) {
         Piece piece = square.getPiece();
         if (piece == null) return null;
@@ -167,8 +129,40 @@ public class Board {
         }
         return validMovesForSquare;
     }
+    
+    public String toString() {
+        String board = "";
+        String horizontalLabel = "  A B C D E F G H\n";
+        for (int i = 0; i < 8; i++) {
+            if (i == 0) board += horizontalLabel;
+            for (int j = 0; j < 8; j++) {
+                if (j == 0) board += Integer.toString(8 - i);
+                Square square = Board[i][j];
+                board += "|";
+                if (square.isOccupiedByPieceOfColor("W")) board += "\033[31;1m";
+                board += square.toString();
+                if (square.isOccupiedByPieceOfColor("W")) board += "\033[0m";
+                if (j == 7) board += "|" + Integer.toString(8 - i) + "\n";
+            }
+            if (i == 7) board += horizontalLabel;
+        }
+        return board;
+    }
+    
+    private Square getSquareAtCoordinates(String coords) {
+        int col = Columns.indexOf(coords.substring(0, 1));
+        int row = 8 - Integer.parseInt(coords.substring(1, 2));
 
-    public List<Square> validMovesForPieceOnSquareExCheck(Square square) {
+        if (!rowAndColAreWithinBounds(row, col)) return null;
+        
+        return Board[row][col];
+    }
+    
+    private boolean rowAndColAreWithinBounds(int row, int col) {
+        return col >= 0 && col <= 7 && row >= 0 && row <= 7;
+    }
+    
+    private List<Square> validMovesForPieceOnSquareExCheck(Square square) {
         Piece piece = square.getPiece();
         List<Square> validMoves = new ArrayList<Square>();
         
@@ -240,7 +234,7 @@ public class Board {
         return validMoves;
     }
     
-    public List<Square> validMovesForPawn(Square square) {
+    private List<Square> validMovesForPawn(Square square) {
         List<Square> validMoves = new ArrayList<Square>();
         
         // Regular moves, 1 or 2 up or down depending on color
@@ -269,23 +263,29 @@ public class Board {
 
         return validMoves;
     }
-        
-    public String toString() {
-        String board = "";
-        String horizontalLabel = "  A B C D E F G H\n";
-        for (int i = 0; i < 8; i++) {
-            if (i == 0) board += horizontalLabel;
-            for (int j = 0; j < 8; j++) {
-                if (j == 0) board += Integer.toString(8 - i);
-                Square square = Board[i][j];
-                board += "|";
-                if (square.isOccupiedByPieceOfColor("W")) board += "\033[31;1m";
-                board += square.toString();
-                if (square.isOccupiedByPieceOfColor("W")) board += "\033[0m";
-                if (j == 7) board += "|" + Integer.toString(8 - i) + "\n";
+    
+    private void addPieceAndSquareToPieceLocations(Piece piece, Square squareToAdd) {
+        HashMap<Piece, ArrayList<Square>> PieceLocations =
+                piece.isWhite() ? WhitePieceLocations : BlackPieceLocations;
+        ArrayList<Square> pieceLocations = PieceLocations.get(piece);
+        if (pieceLocations == null) pieceLocations = new ArrayList<Square>();
+        pieceLocations.add(squareToAdd);
+        PieceLocations.put(piece, pieceLocations);
+    }
+
+    private void removePieceAndSquareFromPieceLocations(Piece piece, Square squareToRemove) {
+        if (piece == null) return;
+        HashMap<Piece, ArrayList<Square>> PieceLocations =
+                piece.isWhite() ? WhitePieceLocations : BlackPieceLocations;
+        ArrayList<Square> squares = PieceLocations.get(piece);
+        if (squares == null) return;
+        Iterator<Square> i = squares.iterator();
+        while (i.hasNext()) {
+            Square s = i.next();
+            if (s.equals(squareToRemove)) {
+                i.remove();
+                break;
             }
-            if (i == 7) board += horizontalLabel;
         }
-        return board;
     }
 }
