@@ -66,7 +66,7 @@ public class Board {
         if (!fromSquare.isOccupiedByPieceOfColor(color)) return false;
         if (toSquare.isOccupiedByPieceOfColor(color)) return false;
 
-        if (validMovesForSquare(fromSquare).contains(toSquare)) return true;
+        if (validMovesForPieceOnSquare(fromSquare).contains(toSquare)) return true;
         else return false;
     }
     
@@ -88,10 +88,10 @@ public class Board {
         // TODO get isValid to consider check
         if (color.equals("W")) {
             Square whiteKingSquare = WhitePieceLocations.get(new King("W")).get(0);
-            if (validMovesForSquare(whiteKingSquare).isEmpty() && isColorInCheck("W")) return true;
+            if (validMovesForPieceOnSquare(whiteKingSquare).isEmpty() && isColorInCheck("W")) return true;
         } else {
             Square blackKingSquare = BlackPieceLocations.get(new King("B")).get(0);
-            if (validMovesForSquare(blackKingSquare).isEmpty() && isColorInCheck("B")) return true;            
+            if (validMovesForPieceOnSquare(blackKingSquare).isEmpty() && isColorInCheck("B")) return true;            
         }
         return false;
     }
@@ -107,7 +107,7 @@ public class Board {
             ArrayList<Square> squares = entry.getValue();
             
             for (Square s : squares) {
-                for (Square move : validMovesForSquareExCheck(s))
+                for (Square move : validMovesForPieceOnSquareExCheck(s))
                     if (move.containsKingOfColor(color)) return true;
             }
         }
@@ -153,11 +153,11 @@ public class Board {
         PieceLocations.put(piece, pieceLocations);
     }
     
-    public List<Square> validMovesForSquare(Square square) {
+    public List<Square> validMovesForPieceOnSquare(Square square) {
         Piece piece = square.getPiece();
         if (piece == null) return null;
 
-        List<Square> validMovesForSquare = validMovesForSquareExCheck(square);
+        List<Square> validMovesForSquare = validMovesForPieceOnSquareExCheck(square);
         Iterator<Square> i = validMovesForSquare.iterator();
         while (i.hasNext()) {
             Square s = i.next();
@@ -168,7 +168,7 @@ public class Board {
         return validMovesForSquare;
     }
 
-    public List<Square> validMovesForSquareExCheck(Square square) {
+    public List<Square> validMovesForPieceOnSquareExCheck(Square square) {
         Piece piece = square.getPiece();
         List<Square> validMoves = new ArrayList<Square>();
         
