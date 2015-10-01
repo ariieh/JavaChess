@@ -5,37 +5,43 @@ public class Chess {
 
     public static void main(String[] args) {
         Board board = new Board();
-        String color = "B";
+        String colorToMove = "B";
+        String opposingColor = "W";
         Scanner reader = new Scanner(System.in);
         
         // Game loop
         while (true) {
             // Swap colors
-            color = (color.equals("W") ? "B" : "W");
+            String temp = colorToMove;
+            colorToMove = opposingColor;
+            opposingColor = temp;
             
             // Print the board
             System.out.println(board.toString());
-                        
-            // Keep looping while the user makes a valid move
-            String from = "H0"; String to = "H0";
             
-            while (!board.isValidMoveForColor(from, to, color)) {
-                System.out.print(color.equals("W") ? "White" : "Black");
-                System.out.println(", please enter a valid move (e.g. E2E4):");
-                String move = reader.next();
+            // Keep looping while White makes a valid move
+            String from = "H0"; String to = "H0";
+            String move = "H0H0";
+            
+            if (colorToMove.equals("W")) {
+                while (!board.isValidMoveForColor(from, to, colorToMove)) {
+                    System.out.println("White, please enter a valid move (e.g. E2E4):");
+                    move = reader.next();
+                    from = move.substring(0, 2);
+                    to   = move.substring(2);
+                }
+            } else {
+                move = BoardAnalyzer.bestMoveForColor(board, colorToMove);
                 from = move.substring(0, 2);
                 to   = move.substring(2);
             }
-            
+
             // Make the move
             board.move(from, to);
             
             // Checkmate.
-            if (board.isColorInCheckmate("W")) {
-                System.out.println("White wins!"); break;
-            }
-            if (board.isColorInCheckmate("B")) {
-                System.out.println("Black wins!"); break;
+            if (board.isColorInCheckmate(opposingColor)) {
+                System.out.println(colorToMove + " wins!"); break;
             }
         }
     }
