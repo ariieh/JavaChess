@@ -73,10 +73,14 @@ public class Board {
     public void move(String from, String to) {
         Square fromSquare = getSquareAtCoordinates(from);
         Square toSquare = getSquareAtCoordinates(to);
+        move(fromSquare, toSquare);
+    }
+    
+    public void move(Square fromSquare, Square toSquare) {
         Piece pieceToMove = fromSquare.empty();
         Piece pieceToRemove = toSquare.empty();
         
-        if (pieceToMove == null) throw new IllegalArgumentException("No piece at " + from);
+        if (pieceToMove == null) throw new IllegalArgumentException("No piece at " + fromSquare);
         
         addPieceAndSquareToPieceLocations(pieceToMove, toSquare);
         removePieceAndSquareFromPieceLocations(pieceToMove, fromSquare);
